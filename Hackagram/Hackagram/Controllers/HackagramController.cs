@@ -11,6 +11,7 @@ using System.Text;
 
 namespace Hackagram.Controllers
 {
+    [RequireHttps]
     public class HackagramController : Controller
     {
         // GET: Hackagram
