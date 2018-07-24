@@ -3,12 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Hackagram.DAL;
+using Hackagram.Models;
 
 namespace Hackagram.Controllers
 {
     [Authorize]
     public class ClaimsController : Controller
     {
+        private AdminContext adminContext = new AdminContext();
         /// <summary>
         /// Add user's claims to viewbag
         /// </summary>
@@ -28,6 +31,19 @@ namespace Hackagram.Controllers
             ViewBag.TenantId = userClaims?.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid")?.Value;
 
             return View();
+        }
+
+        public ActionResult AddUser()
+        {
+            var userClaims = User.Identity as System.Security.Claims.ClaimsIdentity;
+
+            var firstName = userClaims?.FindFirst("name")?.Value?.Split(' ')[0];
+            var lastName = userClaims?.FindFirst("name")?.Value?.Split(' ')[1];
+            var user = new User(firstName, lastName);
+            adminContext.Users.Add(user);
+            adminContext.SaveChanges();
+
+            return View("Index");
         }
     }
 }

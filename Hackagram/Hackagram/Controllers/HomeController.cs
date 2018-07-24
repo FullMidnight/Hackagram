@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
+using Hackagram.DAL;
+using Hackagram.Models;
 
 namespace Hackagram.Controllers
 {
