@@ -4,73 +4,86 @@
     Layout = "~/Views/Shared/_HackagramLayout.cshtml";
 }
 
-<script>
-    window.addEventListener('load',
-        function () {
-            document.body.style.background = "#fafafa";
-        }, false);
-</script>
-<div class="container" style="width:100%; height:100%">
-    <div class="row">
-        @*<div class="col-lg-offset-4">
-                <img src="https://images-na.ssl-images-amazon.com/images/I/41IU0lFE8CL._SY450_.jpg"/>
-            </div>*@
-        <div class="col-sm-offset-3">
-            <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px; margin-top:60px">
-                <div class="card-body">
-                    <h1>Hackergram</h1>
-                    <form>
-                        <input class="input-2" type="text" placeholder="Username" />
-                        <input class="input-2" type="text" placeholder="Password" />
-                        <input class="btn" type="submit" />
-                    </form>
-                    <a class="text-center" href="https://www.google.com">Forgot Password?</a>
+
+@if (ViewBag.Username == "")
+{
+    <script>
+        window.addEventListener('load',
+            function () {
+                document.body.style.background = "#fafafa";
+            }, false);
+    </script>
+    <div class="container" style="width:100%; height:100%">
+        <div class="row">
+            @*<div class="col-lg-offset-4">
+                    <img src="https://images-na.ssl-images-amazon.com/images/I/41IU0lFE8CL._SY450_.jpg"/>
+                </div>*@
+            <div class="col-sm-offset-3">
+                <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px; margin-top:60px">
+                    <div class="card-body">
+                        <h1>Hackagram</h1>
+                        <form method="post" action="@Url.Action("ValidateLogin","Hackagram")">
+                            <input name="Username" class="input-2" type="text" placeholder="Username" />
+                            <input name="Password" class="input-2" type="password" placeholder="Password" />
+                            <input class="btn" type="submit" />
+                        </form>
+                        @*<a class="text-center" href="https://www.google.com">Forgot Password?</a>*@
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-sm-offset-3">
-            <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px">
-                <div class="card-body">
-                    <p style="width:350px">Don't have an account? <a href="~/Views/Hackagram/Login.cshtml">Sign up</a></p>
+        <div class="row">
+            <div class="col-sm-offset-3">
+                <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px">
+                    <div class="card-body">
+                        @if (ViewBag.invalidLogin)
+                        {
+                            <p style="color:red">@ViewBag.invalidLoginMessage</p>
+                        }
+                        <p style="width:350px">Don't have an account? <a href="~/Views/Hackagram/Login.cshtml">Sign up</a></p>
+                    </div>
                 </div>
-            </div>
 
+            </div>
         </div>
     </div>
-</div>
-<style>
-    .header {
-        padding: 10px;
-    }
+    <style>
+        .header {
+            padding: 10px;
+        }
 
-    .box {
-        padding: 10px;
-        margin: 10px;
-    }
+        .box {
+            padding: 10px;
+            margin: 10px;
+        }
 
-    .btn {
-        width: 100%;
-        background-color: #3897f0;
-        border: 1px solid #3897f0;
-        padding: 5px 12px;
-        color: #fff;
-        font-weight: bold;
-        cursor: pointer;
-        border-radius: 3px;
-    }
+        .btn {
+            width: 100%;
+            background-color: #3897f0;
+            border: 1px solid #3897f0;
+            padding: 5px 12px;
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+        }
 
-    .input-1,
-    .input-2 {
-        width: 100%;
-        margin-bottom: 5px;
-        padding: 8px 12px;
-        border: 1px solid #dbdbdb;
-        box-sizing: border-box;
-        border-radius: 3px;
-    }
-</style>
+        .input-1,
+        .input-2 {
+            width: 100%;
+            margin-bottom: 5px;
+            padding: 8px 12px;
+            border: 1px solid #dbdbdb;
+            box-sizing: border-box;
+            border-radius: 3px;
+        }
+    </style>
+}
+else
+{
+    <h1>Welcome @ViewBag.Username</h1>
+}
+
 
 
 
