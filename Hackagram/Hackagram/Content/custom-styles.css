@@ -1,0 +1,17 @@
+﻿#instagram-icon {
+    height: 50px;
+    width: 50px;
+}
+
+#instagram-title {
+    font-family: cursive;
+    font-size: 30pt;
+    font-style: italic;
+    vertical-align: bottom;
+}
+
+.instagram-image {
+    height: auto;
+    width: 585px;
+    margin-bottom: 15px;
+}
