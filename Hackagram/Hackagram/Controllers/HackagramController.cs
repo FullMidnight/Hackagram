@@ -143,7 +143,7 @@ namespace Hackagram.Controllers
             string uName = collection["Username"].ToString();
             string pass = collection["Password"].ToString();
             bool userExists = false;
-            string connection = "Server=tcp:latenightsecurity.database.windows.net,1433;Initial Catalog=Hackagram;Persist Security Info=False;User ID=Validator;Password=BasicPasswordForValidation!1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+            string connection = "Server=tcp:latenightsecurity.database.windows.net,1433;Initial Catalog=Hackagram;Persist Security Info=False;User ID=;Password=!1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
             userExists = !string.IsNullOrEmpty(DBCall("select Username from Users where Username = '"+uName+"'", connection, "Username"));
 
             if(!userExists)

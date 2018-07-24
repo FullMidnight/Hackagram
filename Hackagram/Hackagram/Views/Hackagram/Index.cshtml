@@ -21,7 +21,7 @@
             <div class="col-sm-offset-3">
                 <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px; margin-top:60px">
                     <div class="card-body">
-                        <h1>Hackagram</h1>
+                        <h1 class="text-center">Hackagram</h1>
                         <form method="post" action="@Url.Action("ValidateLogin","Hackagram")">
                             <input name="Username" class="input-2" type="text" placeholder="Username" />
                             <input name="Password" class="input-2" type="password" placeholder="Password" />
@@ -81,7 +81,18 @@
 }
 else
 {
-    <h1>Welcome @ViewBag.Username</h1>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <script>
+        window.addEventListener('load',
+            function () {
+                @if (ViewBag.Username == "Basic")
+                {
+                    Html.Raw("alert('O.M.G Basic much?')");
+                }
+            }, false);
+
+    </script>
+    <i class="fab fa-instagram"></i><span>Hello @ViewBag.Username</span>
 }
 
 
