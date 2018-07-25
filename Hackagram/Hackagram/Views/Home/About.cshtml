@@ -1,7 +1,35 @@
 ﻿@{
-    ViewBag.Title = "About";
+    ViewBag.Title = "Hackagram";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<link rel="stylesheet" href="~/Content/custom-styles.css" />
 
-<p>Use this area to provide additional information.</p>
+<div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <img id="instagram-icon" src="~/img/instagram-icon-logo.jpg" />
+                <span id="instagram-title">Hackagram</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <img class="instagram-image" src="~/img/Hackbox_2018.jpg" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-heart-empty"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <form class="form-inline">
+                    <input class="form-control" type="text" placeholder="Add a comment..." />
+                    <button class="btn btn-primary" type="submit">Post</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
