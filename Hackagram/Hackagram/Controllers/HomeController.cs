@@ -14,6 +14,8 @@ namespace Hackagram.Controllers
     [RequireHttps]
     public class HomeController : Controller
     {
+        private AdminContext adminContext = new AdminContext();
+
         public ActionResult Index()
         {
             return View();
@@ -31,17 +33,14 @@ namespace Hackagram.Controllers
             return View();
         }
 
-        public ActionResult Questions()
+        public ActionResult Questions(string excerciseName = "")
         {
-           
+            if (!string.IsNullOrEmpty(excerciseName))
+            {
+
+            }
 
             return View();
-        }
-
-        [HttpPost]
-        public JsonResult GetQuestions(string excerciseName)
-        {
-
         }
 
         [HttpPost]

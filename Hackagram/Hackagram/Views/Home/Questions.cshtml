@@ -3,6 +3,19 @@
     ViewBag.Title = "Questions";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+<script>
+
+    function CheckAnswer(data) {
+        url = @Url.Action("GetQuestions", "Hackagram")+'?excerciseName=' + data
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("GET", url, true);
+        xhttp.setRequestHeader("Content-type", "application/json");
+        xhttp.send();
+        var response = JSON.parse(xhttp.responseText);
+
+        
+    }
+</script>
 
 <div class="container">
     <div class="row">
@@ -13,7 +26,7 @@
     <div class="row">
         <div class="col-lg-2">
             <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                <li><a tabindex="-1" href="@Url.Action("index","Hackagram")">Hackagram</a></li>
+                <li><a tabindex="-1" href="@Url.Action("GetQuestions", "Hackagram", new { excerciseName = "Hackagram"})">Hackagram</a></li>
                 <li class="divider"></li>
                 <li class="disabled"><a tabindex="-1" href="#">Hackify</a></li>
                 <li class="divider"></li>
@@ -21,7 +34,7 @@
             </ul>
         </div>
         <div class="col-lg-2">
-            <h1>Questions</h1>
+            
         </div>
     </div>
 </div>
