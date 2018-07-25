@@ -6,22 +6,13 @@
 
 }
 @model  Hackagram.Models.Question
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <script>
+    $(document).ready(function () {
+        
+    });
 
-        function CheckAnswer(data) {
-                $.post(@Url.Action("ValidateAnswer", "ValidateAnswer"),
-                    {
-                        excerciseName: '@ViewBag.excercise',
-                        questionNumber: parseInt(data.replace("qtext_", "")),
-                        answer: $('#'+data).val()
-                    },
-                    function (data, status) {
-                        alert("Data: " + data + "\nStatus: " + status);
-                    });
-
-
-        }
-    </script>
+</script>
 
 <div class="container">
     <div class="row">
@@ -58,10 +49,13 @@
                                     {
                                         <div class="col-sm-4">
                                             <div class="input-group">
-                                                <span class="input-group-btn">
-                                                    <button class="btn btn-success" onclick="CheckAnswer('qtext_@q.QuestionNumber')" type="button">Submit</button>
-                                                </span>
-                                                <input id="qtext_@q.QuestionNumber" type="text" class="form-control" placeholder="Got the answer?">
+                                                @using (Html.BeginForm("ValidateAnswer", "Home", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+                                                {
+                                                    @Html.TextBoxFor(m => m.Excercise, new { @class = "form-control", Value = "Hackagram", style = "display:none", @readonly = "true" })
+                                                    @Html.TextBoxFor(m => m.QuestionNumber, new { @class = "form-control", Value = q.QuestionNumber, style = "display:none", @readonly = "true" })
+                                                    @Html.TextBoxFor(m => m.Answer, new { @class = "form-control" })
+                                                    <input class="btn btn-primary" type="submit" value="Submit" />
+                                                }
                                             </div>
                                         </div>
                                     }
