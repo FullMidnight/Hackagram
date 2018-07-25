@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OpenIdConnect;
 using Hackagram.DAL;
 using Hackagram.Models;
+using System.Security.Claims;
 
 namespace Hackagram.Controllers
 {
@@ -32,8 +33,8 @@ namespace Hackagram.Controllers
 
             return View();
         }
-
-        public ActionResult Questions(string excerciseName = "")
+        [Authorize]
+        public ActionResult Questions(string excerciseName = "Hackagram")
         {
             List<Question> questions = new List<Question>();
             if (!string.IsNullOrEmpty(excerciseName))
@@ -49,10 +50,13 @@ namespace Hackagram.Controllers
         }
 
         [HttpPost]
-        public JsonResult ValidateAnswer(Question question)
+        public ActionResult ValidateAnswer(Question question)
         {
 
-            string userEmail = User.Identity.Name;
+            //string userEmail = User.Identity.Claims["preferred_username"].ToString();
+            var identity = (ClaimsIdentity)User.Identity;
+            List<Claim> claims = identity.Claims.ToList();
+            string userEmail = claims.Where(c => c.Type == "preferred_username").First().Value;
             bool correct = false;
             string hint = string.Empty;
             if (question.Excercise == "Hackagram" && question.QuestionNumber == 2)
@@ -62,8 +66,8 @@ namespace Hackagram.Controllers
                 {
                     correct = true;
                     //Add SQL call to insert  for questions answered.
-                    var qAnswered = new QuestionAnswered(question.Excercise, userEmail, question.QuestionNumber);
-                    adminContext.QuestionsAnswered.Add(qAnswered);
+                    var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
+                    adminContext.AnsweredQuestions.Add(qAnswered);
                     adminContext.SaveChanges();
                 }
             }
@@ -77,8 +81,8 @@ namespace Hackagram.Controllers
                 {
                     correct = true;
                     //Add SQL call to insert  for questions answered.
-                    var qAnswered = new QuestionAnswered(question.Excercise, userEmail, question.QuestionNumber);
-                    adminContext.QuestionsAnswered.Add(qAnswered);
+                    var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
+                    adminContext.AnsweredQuestions.Add(qAnswered);
                     adminContext.SaveChanges();
                 }
                 else
@@ -90,12 +94,7 @@ namespace Hackagram.Controllers
                 }
 
             }
-
-
-            if (correct)
-                return Json(new Value("success"));
-            else
-                return Json(new Value("wrong", hint));
+            return Questions(question.Excercise);
         }
 
         /// <summary>

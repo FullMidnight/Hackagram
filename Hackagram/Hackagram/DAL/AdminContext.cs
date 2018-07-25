@@ -22,6 +22,6 @@ namespace Hackagram.DAL
 
         public DbSet<User> Users { get; set; }
         public DbSet<Question> Questions { get; set; }
-        public DbSet<QuestionAnswered> QuestionsAnswered { get; set; }
+        public DbSet<AnsweredQuestion> AnsweredQuestions { get; set; }
     }
 }
