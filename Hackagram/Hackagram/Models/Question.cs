@@ -10,12 +10,22 @@ namespace Hackagram.Models
         public int ID { get; set; }
         public string Excercise { get; set; }
         public int QuestionNumber { get; set; }
-        public string Answer   { get; set; }
-        public Question(string excercise, int exerciseNumber ,string answer)
+        public string Answer { get; set; }
+        public string QuestionText { get; set; }
+        public int Points { get; set; }
+        
+        public Question(string excercise, int QuestionNumber,   string answer, string questionText, int points )
         {
             this.Excercise = excercise;
             this.Answer = answer;
-            this.QuestionNumber = exerciseNumber;
+            this.Points = points;
+            this.QuestionNumber = QuestionNumber;
+            this.QuestionText = questionText;
+        }
+        public Question()
+        {
+            this.Excercise = this.Answer = this.QuestionText = string.Empty;
+            this.Points = this.QuestionNumber = 0;
         }
     }
 }

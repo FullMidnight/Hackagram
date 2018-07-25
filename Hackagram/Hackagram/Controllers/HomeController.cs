@@ -11,6 +11,10 @@ using Hackagram.Models;
 
 namespace Hackagram.Controllers
 {
+    //private class Value
+    //{
+    //    string 
+    //}
     [RequireHttps]
     public class HomeController : Controller
     {
@@ -52,6 +56,41 @@ namespace Hackagram.Controllers
         public JsonResult ValidateAnswer(string excerciseName, int questionNumber, string answer)
         {
 
+            string userEmail = User.Identity.Name;
+            bool correct = false;
+            if (excerciseName == "Hackagram" && questionNumber == 2)
+            {
+                //Check for HTML and Javascript
+                if (answer.Contains("<script>") && answer.Contains("</script>"))
+                {
+                    correct = true;
+                    //Add SQL call to insert  for questions answered.
+                    var qAnswered = new QuestionAnswered(excerciseName,userEmail,questionNumber);
+                    adminContext.QuestionsAnswered.Add(qAnswered);
+                    adminContext.SaveChanges();
+                }
+            }
+            else
+            {
+                string answerFromDB = (from q in adminContext.Questions
+                              where q.Excercise == excerciseName && q.QuestionNumber == questionNumber
+                              select q.Answer).First();
+
+                if (answer == answerFromDB)
+                {
+                    correct = true;
+                    //Add SQL call to insert  for questions answered.
+                    var qAnswered = new QuestionAnswered(excerciseName, userEmail, questionNumber);
+                    adminContext.QuestionsAnswered.Add(qAnswered);
+                    adminContext.SaveChanges();
+                }
+
+            }
+
+
+
+            JsonResult r = new JsonResult();
+            return new JsonResult();
         }
 
         /// <summary>

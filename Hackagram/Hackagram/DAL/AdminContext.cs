@@ -14,8 +14,14 @@ namespace Hackagram.DAL
         {
 
         }
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            Database.SetInitializer<AdminContext>(null);
+            base.OnModelCreating(modelBuilder);
+        }
 
         public DbSet<User> Users { get; set; }
         public DbSet<Question> Questions { get; set; }
+        public DbSet<QuestionAnswered> QuestionsAnswered { get; set; }
     }
 }

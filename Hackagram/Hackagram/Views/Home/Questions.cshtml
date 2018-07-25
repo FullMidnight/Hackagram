@@ -6,19 +6,22 @@
 
 }
 @model  Hackagram.Models.Question
-@*<script>
+<script>
 
         function CheckAnswer(data) {
-            url = @Url.Action("GetQuestions", "Hackagram")+'?excerciseName=' + data
-            var xhttp = new XMLHttpRequest();
-            xhttp.open("GET", url, true);
-            xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.send();
-            var response = JSON.parse(xhttp.responseText);
+                $.post(@Url.Action("ValidateAnswer", "ValidateAnswer"),
+                    {
+                        excerciseName: '@ViewBag.excercise',
+                        questionNumber: parseInt(data.replace("qtext_", "")),
+                        answer: $('#'+data).val()
+                    },
+                    function (data, status) {
+                        alert("Data: " + data + "\nStatus: " + status);
+                    });
 
 
         }
-    </script>*@
+    </script>
 
 <div class="container">
     <div class="row">
@@ -35,15 +38,42 @@
                 <a class="btn btn-default disabled">HackBook</a>
             </div>
         </div>
-        <div class="col-lg-2">
+        <div class="col-lg-4">
             @if (ViewBag.questions.Count > 0)
             {
-                <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px; margin-top:60px">
-                    <div class="card-body">
-                        <h1 class="text-center">Question 1: </h1>
+                foreach (Hackagram.Models.Question q in ViewBag.questions)
+                {
+                    <div class="card box" style="max-width:500px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px; margin-top:60px">
+                        <div class="card-body">
+                            <h1 class="text-center">Question @q.QuestionNumber</h1>
+                            <hr />
+                            <p>@q.QuestionText</p>
+                            <hr />
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col-sm-1">
+                                        <p>Points worth: <span style="color:forestgreen">@q.Points</span></p>
+                                    </div>
+                                    @if (!string.IsNullOrWhiteSpace(q.Answer))
+                                    {
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                <span class="input-group-btn">
+                                                    <button class="btn btn-success" onclick="CheckAnswer('qtext_@q.QuestionNumber')" type="button">Submit</button>
+                                                </span>
+                                                <input id="qtext_@q.QuestionNumber" type="text" class="form-control" placeholder="Got the answer?">
+                                            </div>
+                                        </div>
+                                    }
 
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                </div>
+                    <hr />
+                }
+
             }
             else
             {

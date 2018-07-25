@@ -39,7 +39,8 @@ namespace Hackagram.Controllers
 
             var firstName = userClaims?.FindFirst("name")?.Value?.Split(' ')[0];
             var lastName = userClaims?.FindFirst("name")?.Value?.Split(' ')[1];
-            var user = new User(firstName, lastName);
+            var email = userClaims?.FindFirst("preferred_username")?.Value;
+            var user = new User(firstName, lastName, email);
             adminContext.Users.Add(user);
             adminContext.SaveChanges();
 
