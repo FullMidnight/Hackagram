@@ -1,4 +1,5 @@
-﻿@{
+﻿@model Hackagram.Models.Question
+@{
     ViewBag.Title = "Hackagram";
 }
 <link rel="stylesheet" href="~/Content/custom-styles.css" />
@@ -24,10 +25,11 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <form class="form-inline">
-                    <input class="form-control" type="text" placeholder="Add a comment..." />
-                    <button class="btn btn-primary" type="submit">Post</button>
-                </form>
+                @using (Html.BeginForm("ValidateAnswer", "Home", FormMethod.Post, new { @class = "form-inline", role = "form" }))
+                {
+                    @Html.TextBoxFor(m => m.Answer, new { @class = "form-control" })
+                    <input class="btn btn-primary" type="submit" value="Post" />
+                }
             </div>
         </div>
     </div>

@@ -49,9 +49,9 @@ namespace Hackagram.Controllers
         }
 
         [HttpPost]
-        public JsonResult ValidateAnswer(string excerciseName, int questionNumber, string answer)
+        public JsonResult ValidateAnswer(Question question)
         {
-
+            return null;
         }
 
         /// <summary>
