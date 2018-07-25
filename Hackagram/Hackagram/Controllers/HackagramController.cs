@@ -22,7 +22,7 @@ namespace Hackagram.Controllers
             ViewBag.invalidLoginMessage = invalidLoginMessage;
             if (!string.IsNullOrEmpty(userHash))
             {
-                string connection = "<ConnectionStringGoesHere>";
+                string connection = "Server=tcp:latenightsecurity.database.windows.net,1433;Initial Catalog=Admin;Persist Security Info=False;User ID=Validator;Password=BasicPasswordForValidation!1;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
                 string expirationDateString = string.Empty;
                 string userName = string.Empty;
                 using (SqlConnection myConnection = new SqlConnection(connection))

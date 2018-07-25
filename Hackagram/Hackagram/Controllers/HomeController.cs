@@ -35,11 +35,16 @@ namespace Hackagram.Controllers
 
         public ActionResult Questions(string excerciseName = "")
         {
+            List<Question> questions = new List<Question>();
             if (!string.IsNullOrEmpty(excerciseName))
             {
+                questions = (from b in adminContext.Questions
+                            where b.Excercise.Equals(excerciseName)
+                            select b).ToList();
 
             }
-
+            ViewBag.excercise = excerciseName;
+            ViewBag.questions =  questions;
             return View();
         }
 
