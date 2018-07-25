@@ -11,10 +11,6 @@ using Hackagram.Models;
 
 namespace Hackagram.Controllers
 {
-    //private class Value
-    //{
-    //    string 
-    //}
     [RequireHttps]
     public class HomeController : Controller
     {
@@ -58,6 +54,7 @@ namespace Hackagram.Controllers
 
             string userEmail = User.Identity.Name;
             bool correct = false;
+            string hint = string.Empty;
             if (excerciseName == "Hackagram" && questionNumber == 2)
             {
                 //Check for HTML and Javascript
@@ -84,13 +81,20 @@ namespace Hackagram.Controllers
                     adminContext.QuestionsAnswered.Add(qAnswered);
                     adminContext.SaveChanges();
                 }
+                else
+                {
+                     hint = (from q in adminContext.Questions
+                                           where q.Excercise == excerciseName && q.QuestionNumber == questionNumber
+                                           select q.Hint).First();
+
+                }
 
             }
 
-
-
-            JsonResult r = new JsonResult();
-            return new JsonResult();
+            if (correct)
+                return Json(new Value("success"));
+            else
+                return Json(new Value("wrong", hint));
         }
         [HttpPost]
         public JsonResult ValidateAnswer(Question question)
@@ -98,6 +102,7 @@ namespace Hackagram.Controllers
 
             string userEmail = User.Identity.Name;
             bool correct = false;
+            string hint = string.Empty;
             if (question.Excercise == "Hackagram" && question.QuestionNumber == 2)
             {
                 //Check for HTML and Javascript
@@ -124,13 +129,21 @@ namespace Hackagram.Controllers
                     adminContext.QuestionsAnswered.Add(qAnswered);
                     adminContext.SaveChanges();
                 }
+                else
+                {
+                    hint = (from q in adminContext.Questions
+                            where q.Excercise == question.Excercise && q.QuestionNumber == question.QuestionNumber
+                            select q.Hint).First();
+
+                }
 
             }
 
 
-
-            JsonResult r = new JsonResult();
-            return new JsonResult();
+            if (correct)
+                return Json(new Value("success"));
+            else
+                return Json(new Value("wrong", hint));
         }
 
         /// <summary>
