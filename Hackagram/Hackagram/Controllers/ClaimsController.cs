@@ -29,7 +29,12 @@ namespace Hackagram.Controllers
 
             // TenantId is the unique Tenant Id - which represents an organization in Azure AD
             ViewBag.TenantId = userClaims?.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid")?.Value;
-
+            var firstName = userClaims?.FindFirst("name")?.Value?.Split(' ')[0];
+            var lastName = userClaims?.FindFirst("name")?.Value?.Split(' ')[1];
+            var email = userClaims?.FindFirst("preferred_username")?.Value;
+            var user = new User(firstName, lastName, email);
+            adminContext.Users.Add(user);
+            adminContext.SaveChanges();
             return View();
         }
 
