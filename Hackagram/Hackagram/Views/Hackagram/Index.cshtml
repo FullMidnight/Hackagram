@@ -1,6 +1,6 @@
-﻿
+﻿@model Hackagram.Models.Question
 @{
-    ViewBag.Title = "";
+    ViewBag.Title = "Hackagram";
     Layout = "~/Views/Shared/_HackagramLayout.cshtml";
 }
 
@@ -22,7 +22,7 @@
                 <div class="card box" style="max-width:350px; min-height:100px; max-height:275px;min-height:50px; margin-left:40px; margin-top:60px">
                     <div class="card-body">
                         <h1 class="text-center">Hackagram</h1>
-                        <form method="post" action="@Url.Action("ValidateLogin","Hackagram")">
+                        <form method="post" action="@Url.Action("ValidateLogin", "Hackagram")">
                             <input name="Username" class="input-2" type="text" placeholder="Username" />
                             <input name="Password" class="input-2" type="password" placeholder="Password" />
                             <input class="btn" type="submit" />
@@ -79,22 +79,137 @@
         }
     </style>
 }
+else if (ViewBag.Username == "Basic")
+{
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/Content/custom-styles.css" />
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <img id="instagram-icon" src="~/img/instagram-icon-logo.jpg" />
+                    <span id="instagram-title">Hackagram</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="instagram-image" src="~/img/Hackbox_2018.jpg" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Ajax.BeginForm("ValidateAnswer", "Home", new AjaxOptions
+                    {
+                        OnSuccess = "OnSuccess",
+                        OnFailure = "OnFailure"
+                    }))
+                    {
+                        @Html.TextBoxFor(m => m.Excercise, new { @class = "form-control", Value = "Hackagram", style = "display:none", @readonly = "true" })
+                        @Html.TextBoxFor(m => m.QuestionNumber, new { @class = "form-control", Value = 2, style = "display:none", @readonly = "true" })
+                        @Html.TextBoxFor(m => m.Answer, new { @class = "form-control" })
+                        <input class="btn btn-primary" type="submit" value="Post" />
+                    }
+                    <ul id="posts"></ul>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-success fade show" role="alert">
+        <strong>Congrats!</strong> You just answered a question!. Check it out at <a href="@Url.Action("Questions", "Home")" class="alert-link">an example link</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <script type="text/javascript">
+        alert('O.M.G! Basic much?');
+        function OnSuccess(response) {
+            if (response.Message == 'success') {
+                $('.alert').alert()
+            }
+
+            $('#posts').children().add("<li><div id=\"commentBox\"class=\"well\"" + response.Answer + "</div></li>")
+        }
+        function OnFailure(response) {
+            $('#posts').children().add("<li><div id=\"commentBox\"class=\"well\"" + response.Answer + "</div></li>")
+        }
+
+    </script>
+}
 else
 {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <script>
-        window.addEventListener('load',
-            function () {
-                @if (ViewBag.Username == "Basic")
-                {
-                    Html.Raw("alert('O.M.G! Basic much?')");
-                }
-            }, false);
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="~/Content/custom-styles.css" />
+
+    <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <img id="instagram-icon" src="~/img/instagram-icon-logo.jpg" />
+                    <span id="instagram-title">Hackagram</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <img class="instagram-image" src="~/img/Hackbox_2018.jpg" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-heart-empty"></span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    @using (Ajax.BeginForm("ValidateAnswer", "Home", new AjaxOptions
+                    {
+                        OnSuccess = "OnSuccess",
+                        OnFailure = "OnFailure"
+                    }))
+                    {
+                        @Html.TextBoxFor(m => m.Excercise, new { @class = "form-control", Value = "Hackagram", style = "display:none", @readonly = "true" })
+                        @Html.TextBoxFor(m => m.QuestionNumber, new { @class = "form-control", Value = 2, style = "display:none", @readonly = "true" })
+                        @Html.TextBoxFor(m => m.Answer, new { @class = "form-control" })
+                        <input class="btn btn-primary" type="submit" value="Post" />
+                    }
+                    <ul id="posts"></ul>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-success fade show" role="alert">
+        <strong>Congrats!</strong> You just answered a question!. Check it out at <a href="@Url.Action("Questions", "Home")" class="alert-link">an example link</a>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <script type="text/javascript">
+
+        function OnSuccess(response) {
+            if (response.Message == 'success') {
+                $('.alert').alert()
+            }
+
+            $('#posts').children().add("<li><div id=\"commentBox\"class=\"well\"" + response.Answer + "</div></li>")
+        }
+        function OnFailure(response) {
+            $('#posts').children().add("<li><div id=\"commentBox\"class=\"well\"" + response.Answer + "</div></li>")
+        }
 
     </script>
-    <i class="fab fa-instagram"></i><span>Hello @ViewBag.Username</span>
 }
-
-
 
 

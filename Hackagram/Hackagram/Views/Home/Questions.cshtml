@@ -6,8 +6,7 @@
 
 }
 @model  Hackagram.Models.Question
-<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
-<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
 <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -17,17 +16,28 @@
 </script>
 <script type="text/javascript">
     function OnSuccess(response) {
-        if (response.message == 'success') {
+        if (response.Message == 'success') {
+            $('#qbox_' + response.Number).hide();
+            $('#qbtn_' + response.Number).hide();
+            $('#qicon_' + response.Number).show();
+        }
+        else if (response.Message == 'failure') {
+            $('#hint').val('That\'s not right. ' + response.AdditionalMessage)
+            $('#alert').alert()
+        }
+        else {
 
         }
-        else { }
     }
     function OnFailure(response) {
-        alert("Error occured.");
+
     }
 </script>
-<div class="alert alert-success fade show" role="alert">
-    <strong>Congrats!</strong> You just answered a question!. Check it out at <a href="@Url.Action("Questions","Home")" class="alert-link">an example link</a>
+
+
+
+<div id="alert" class="alert alert-danger fade show" role="alert">
+    <span><strong>Sorry!</strong> </span> <span id="hint"> </span>
     <button type="button" class="close" data-dismiss="alert" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -65,27 +75,22 @@
                                     </div>
                                     @if (!string.IsNullOrWhiteSpace(q.Answer))
                                     {
-                                    <div class="col-sm-4">
-                                        <div class="input-group">
-                                            @using (Ajax.BeginForm("ValidateAnswer", "Home", new AjaxOptions
-                                            {
-                                                OnSuccess = "OnSuccess",
-                                                OnFailure = "OnFailure",
-                                                LoadingElementId = "progress"
-                                            }))
-                                            {
-                                                @Html.TextBoxFor(m => m.Excercise, new { @class = "form-control", Value = "Hackagram", style = "display:none", @readonly = "true" })
-                                                @Html.TextBoxFor(m => m.QuestionNumber, new { @class = "form-control", Value = q.QuestionNumber, style = "display:none", @readonly = "true" })
-                                                @Html.TextBoxFor(m => m.Answer, new { @class = "form-control" })
-                                                <input class="btn btn-primary" type="submit" value="Submit" />
-                                            }
-                                        </div>
-                                        <div id="progress" class="modal">
-                                            <div class="center">
-                                                <img src="~/images/loader4.gif" />
+                                        <div class="col-sm-4">
+                                            <div class="input-group">
+                                                @using (Ajax.BeginForm("ValidateAnswer", "Home", new AjaxOptions
+                                                {
+                                                    OnSuccess = "OnSuccess",
+                                                    OnFailure = "OnFailure"
+                                                }))
+                                                {
+                                                    @Html.TextBoxFor(m => m.Excercise, new { @class = "form-control", Value = "Hackagram", style = "display:none", @readonly = "true" })
+                                                    @Html.TextBoxFor(m => m.QuestionNumber, new { @class = "form-control", Value = q.QuestionNumber, style = "display:none", @readonly = "true" })
+                                                    @Html.TextBoxFor(m => m.Answer, new { @class = "form-control", id = "qbox_" + q.QuestionNumber })
+                                                    <span id="qicon_@q.QuestionNumber" style="display:none" class="glyphicon glyphicon-ok success" aria-hidden="true"></span>
+                                                    <input id="qbtn_@q.QuestionNumber" class="btn btn-primary" type="submit" value="Submit" />
+                                                }
                                             </div>
                                         </div>
-                                    </div>
                                     }
 
                                 </div>

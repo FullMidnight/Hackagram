@@ -13,6 +13,7 @@ using System.Security.Claims;
 namespace Hackagram.Controllers
 {
     [RequireHttps]
+    [ValidateInput(false)]
     public class HomeController : Controller
     {
         private AdminContext adminContext = new AdminContext();
@@ -52,54 +53,60 @@ namespace Hackagram.Controllers
         [HttpPost]
         public ActionResult ValidateAnswer(Question question)
         {
-
-            //string userEmail = User.Identity.Claims["preferred_username"].ToString();
-            var identity = (ClaimsIdentity)User.Identity;
-            List<Claim> claims = identity.Claims.ToList();
-            string userEmail = claims.Where(c => c.Type == "preferred_username").First().Value;
-            bool correct = false;
-            string hint = string.Empty;
-            if (question.Excercise == "Hackagram" && question.QuestionNumber == 2)
-            {
-                //Check for HTML and Javascript
-                if (question.Answer.Contains("<script>") && question.Answer.Contains("</script>"))
+            try {
+                var identity = (ClaimsIdentity)User.Identity;
+                List<Claim> claims = identity.Claims.ToList();
+                string userEmail = claims.Where(c => c.Type == "preferred_username").First().Value;
+                bool correct = false;
+                string hint = string.Empty;
+                if (question.Excercise == "Hackagram" && question.QuestionNumber == 2)
                 {
-                    correct = true;
-                    //Add SQL call to insert  for questions answered.
-                    var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
-                    adminContext.AnsweredQuestions.Add(qAnswered);
-                    adminContext.SaveChanges();
-                }
-            }
-            else
-            {
-                string answerFromDB = (from q in adminContext.Questions
-                                       where q.Excercise == question.Excercise && q.QuestionNumber == question.QuestionNumber
-                                       select q.Answer).First();
-
-                if (question.Answer == answerFromDB)
-                {
-                    correct = true;
-                    //Add SQL call to insert  for questions answered.
-                    var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
-                    adminContext.AnsweredQuestions.Add(qAnswered);
-                    adminContext.SaveChanges();
+                    //Check for HTML and Javascript
+                    if (question.Answer.Contains("<script>") && question.Answer.Contains("</script>"))
+                    {
+                        correct = true;
+                        //Add SQL call to insert  for questions answered.
+                        var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
+                        adminContext.AnsweredQuestions.Add(qAnswered);
+                        adminContext.SaveChanges();
+                    }
                 }
                 else
                 {
-                    hint = (from q in adminContext.Questions
-                            where q.Excercise == question.Excercise && q.QuestionNumber == question.QuestionNumber
-                            select q.Hint).First();
+                    string answerFromDB = (from q in adminContext.Questions
+                                           where q.Excercise == question.Excercise && q.QuestionNumber == question.QuestionNumber
+                                           select q.Answer).First();
+
+                    if (question.Answer == answerFromDB)
+                    {
+                        correct = true;
+                        //Add SQL call to insert  for questions answered.
+                        var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
+                        adminContext.AnsweredQuestions.Add(qAnswered);
+                        adminContext.SaveChanges();
+                    }
+                    else
+                    {
+                        hint = (from q in adminContext.Questions
+                                where q.Excercise == question.Excercise && q.QuestionNumber == question.QuestionNumber
+                                select q.Hint).First();
+
+                    }
 
                 }
 
+                if (correct)
+                    return Json(new Value("success", question.QuestionNumber));
+                else
+                    return Json(new Value("failure", question.QuestionNumber, hint, question.Answer));
+
+            }
+            catch (Exception e)
+            {
+                return Json(new Value("error", question.QuestionNumber, "Unauthenticated",question.Answer));
             }
 
-            if(correct)
-                return Json(new Value("success" ));
-            else
-                return Json(new Value( "success", hint));
-
+            
         }
 
         /// <summary>
