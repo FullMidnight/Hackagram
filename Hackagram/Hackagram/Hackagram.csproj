@@ -292,9 +292,9 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Shared\_HackagramLayout.cshtml" />
     <Content Include="Views\Hackagram\Index.cshtml" />
-    <Content Include="Views\Hackagram\Login.cshtml" />
     <Content Include="Views\Hackagram\Account.cshtml" />
     <Content Include="Views\Claims\Index.cshtml" />
+    <Content Include="Views\Home\Questions.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

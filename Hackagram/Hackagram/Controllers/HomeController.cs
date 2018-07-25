@@ -33,6 +33,25 @@ namespace Hackagram.Controllers
             return View();
         }
 
+        public ActionResult Questions()
+        {
+           
+
+            return View();
+        }
+
+        [HttpPost]
+        public JsonResult GetQuestions(string excerciseName)
+        {
+
+        }
+
+        [HttpPost]
+        public JsonResult ValidateAnswer(string excerciseName, int questionNumber, string answer)
+        {
+
+        }
+
         /// <summary>
         /// Send an OpenID Connect sign-in request.
         /// Alternatively, you can just decorate the SignIn method with the [Authorize] attribute

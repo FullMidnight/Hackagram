@@ -1,0 +1,29 @@
+﻿
+@{
+    ViewBag.Title = "Questions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-offset-4">
+            <h1>Questions</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-2">
+            <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                <li><a tabindex="-1" href="@Url.Action("index","Hackagram")">Hackagram</a></li>
+                <li class="divider"></li>
+                <li class="disabled"><a tabindex="-1" href="#">Hackify</a></li>
+                <li class="divider"></li>
+                <li class="disabled"><a tabindex="-1" href="#">SnapHack</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-2">
+            <h1>Questions</h1>
+        </div>
+    </div>
+</div>
+<h2>Questions</h2>
+
