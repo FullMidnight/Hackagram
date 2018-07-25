@@ -94,7 +94,12 @@ namespace Hackagram.Controllers
                 }
 
             }
-            return Questions(question.Excercise);
+
+            if(correct)
+                return Json(new Value("success" ));
+            else
+                return Json(new Value( "success", hint));
+
         }
 
         /// <summary>
