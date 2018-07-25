@@ -49,54 +49,6 @@ namespace Hackagram.Controllers
         }
 
         [HttpPost]
-        public JsonResult ValidateAnswer(string excerciseName, int questionNumber, string answer)
-        {
-
-            string userEmail = User.Identity.Name;
-            bool correct = false;
-            string hint = string.Empty;
-            if (excerciseName == "Hackagram" && questionNumber == 2)
-            {
-                //Check for HTML and Javascript
-                if (answer.Contains("<script>") && answer.Contains("</script>"))
-                {
-                    correct = true;
-                    //Add SQL call to insert  for questions answered.
-                    var qAnswered = new QuestionAnswered(excerciseName,userEmail,questionNumber);
-                    adminContext.QuestionsAnswered.Add(qAnswered);
-                    adminContext.SaveChanges();
-                }
-            }
-            else
-            {
-                string answerFromDB = (from q in adminContext.Questions
-                              where q.Excercise == excerciseName && q.QuestionNumber == questionNumber
-                              select q.Answer).First();
-
-                if (answer == answerFromDB)
-                {
-                    correct = true;
-                    //Add SQL call to insert  for questions answered.
-                    var qAnswered = new QuestionAnswered(excerciseName, userEmail, questionNumber);
-                    adminContext.QuestionsAnswered.Add(qAnswered);
-                    adminContext.SaveChanges();
-                }
-                else
-                {
-                     hint = (from q in adminContext.Questions
-                                           where q.Excercise == excerciseName && q.QuestionNumber == questionNumber
-                                           select q.Hint).First();
-
-                }
-
-            }
-
-            if (correct)
-                return Json(new Value("success"));
-            else
-                return Json(new Value("wrong", hint));
-        }
-        [HttpPost]
         public JsonResult ValidateAnswer(Question question)
         {
 
