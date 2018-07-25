@@ -54,6 +54,11 @@ namespace Hackagram.Controllers
             return View();
         }
 
+        public ActionResult Hackagram()
+        {
+            return View();
+        }
+
         // GET: Hackagram/Details/5
         public ActionResult Details(int id)
         {
