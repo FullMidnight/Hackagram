@@ -1,7 +1,6 @@
 ﻿@model Hackagram.Models.Question
 @{
     ViewBag.Title = "Hackagram";
-    Layout = "~/Views/Shared/_HackagramLayout.cshtml";
 }
 
 
@@ -81,7 +80,7 @@
 }
 else if (ViewBag.Username == "Basic")
 {
-    
+
 
 
     <div class="row">
@@ -123,23 +122,25 @@ else if (ViewBag.Username == "Basic")
             </div>
         </div>
     </div>
-    <div class="alert alert-success fade show" role="alert">
+    <div id="alertBox" style="display:none" class="alert alert-success alert-dismissable" role="alert">
         <strong>Congrats!</strong> You just answered a question!. Check it out at <a href="@Url.Action("Questions", "Home")" class="alert-link">an example link</a>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-        </button>
+        </span>
     </div>
     <script type="text/javascript">
         alert('O.M.G! Basic much?');
         function OnSuccess(response) {
             if (response.Message == 'success') {
-                $('.alert').alert()
+                $('#alertBox').show()
             }
 
-            $('#posts').append("<li><div id=\"commentBox\"class=\"well\"" + response.AnswerUsed + "</div></li>")
+            $('#posts').append("<li><div id=\"commentBox\" class=\"well\"></div></li>")
+            $('#commentBox')[0].innerHTML = response.AnswerUsed
         }
         function OnFailure(response) {
-            $('#posts').append("<li><div id=\"commentBox\"class=\"well\"" + response.AnswerUsed + "</div></li>")
+            $('#posts').append("<li><div id=\"commentBox\" class=\"well\"></div></li>")
+            $('#commentBox')[0].innerHTML = response.AnswerUsed
         }
 
     </script>
@@ -186,23 +187,25 @@ else
             </div>
         </div>
     </div>
-    <div class="alert alert-success fade show" role="alert">
+    <div id="alertBox" class="alert alert-success alert-dismissable" role="alert">
         <strong>Congrats!</strong> You just answered a question!. Check it out at <a href="@Url.Action("Questions", "Home")" class="alert-link">an example link</a>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
-        </button>
+        </span>
     </div>
     <script type="text/javascript">
 
         function OnSuccess(response) {
             if (response.Message == 'success') {
-                $('.alert').alert()
+                $('#alertBox').alert()
             }
 
-            $('#posts').append("<li><div id=\"commentBox\"class=\"well\"" + response.AnswerUsed + "</div></li>")
+            $('#posts').append("<li><div id=\"commentBox\"class=\"well\"></div></li>")
+            $('#commentBox')[0].innerHTML = response.AnswerUsed
         }
         function OnFailure(response) {
-            $('#posts').append("<li><div id=\"commentBox\"class=\"well\"" + response.AnswerUsed + "</div></li>")
+            $('#posts').append("<li><div id=\"commentBox\"class=\"well\"></div></li>")
+            $('#commentBox')[0].innerHTML = response.AnswerUsed
         }
 
     </script>
