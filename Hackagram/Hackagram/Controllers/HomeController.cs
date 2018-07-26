@@ -37,7 +37,32 @@ namespace Hackagram.Controllers
         [Authorize]
         public ActionResult Questions(string excerciseName = "Hackagram")
         {
+            var identity = (ClaimsIdentity)User.Identity;
+            List<Claim> claims = identity.Claims.ToList();
+            string userEmail = claims.Where(c => c.Type == "preferred_username").First().Value;
             List<Question> questions = new List<Question>();
+            var tempQ = (from q in adminContext.Questions
+                         join aq in adminContext.AnsweredQuestions.Where(x => x.email == userEmail)
+                         on q.ID equals aq.qID into gj
+                         from x in gj.DefaultIfEmpty()
+                         select new
+                         {
+                             q.ID,
+                             q.Excercise,
+                             q.Answer,
+                             q.Points,
+                             q.QuestionNumber,
+                             q.QuestionText,
+                             q.Hint,
+                             Done = (x == null ? false : true)
+                         });
+            List<PersonalAnsweredQuestion> answerQuests = new List<PersonalAnsweredQuestion>();
+            foreach (var q in tempQ)
+            {
+                if(!answerQuests.Exists(a => a.ID == q.ID))
+                    answerQuests.Add(new PersonalAnsweredQuestion(q.ID, q.Excercise, q.QuestionNumber, q.Answer, q.QuestionText, q.Points, q.Hint, q.Done));
+            }
+            
             if (!string.IsNullOrEmpty(excerciseName))
             {
                 questions = (from b in adminContext.Questions
@@ -46,7 +71,7 @@ namespace Hackagram.Controllers
 
             }
             ViewBag.excercise = excerciseName;
-            ViewBag.questions =  questions;
+            ViewBag.questions =  answerQuests;
             return View();
         }
 
@@ -66,9 +91,16 @@ namespace Hackagram.Controllers
                     {
                         correct = true;
                         //Add SQL call to insert  for questions answered.
-                        var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
-                        adminContext.AnsweredQuestions.Add(qAnswered);
-                        adminContext.SaveChanges();
+                        var checkIfExists = (from q in adminContext.AnsweredQuestions
+                                               where q.excercise == question.Excercise && q.questionNumber == question.QuestionNumber && q.email == userEmail
+                                                select q.email).FirstOrDefault();
+                        if (checkIfExists == null)
+                        {
+                            var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber, question.ID);
+                            adminContext.AnsweredQuestions.Add(qAnswered);
+                            adminContext.SaveChanges();
+                        }
+
                     }
                 }
                 else
@@ -81,9 +113,15 @@ namespace Hackagram.Controllers
                     {
                         correct = true;
                         //Add SQL call to insert  for questions answered.
-                        var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber);
-                        adminContext.AnsweredQuestions.Add(qAnswered);
-                        adminContext.SaveChanges();
+                        var checkIfExists = (from q in adminContext.AnsweredQuestions
+                                                where q.excercise == question.Excercise && q.questionNumber == question.QuestionNumber && q.email == userEmail
+                                                select q.email).FirstOrDefault();
+                        if (checkIfExists == null)
+                        {
+                            var qAnswered = new AnsweredQuestion(question.Excercise, userEmail, question.QuestionNumber, question.ID);
+                            adminContext.AnsweredQuestions.Add(qAnswered);
+                            adminContext.SaveChanges();
+                        }
                     }
                     else
                     {

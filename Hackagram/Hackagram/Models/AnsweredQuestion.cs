@@ -11,17 +11,19 @@ namespace Hackagram.Models
         public string email { get; set; }
         public string excercise { get; set; }
         public int questionNumber { get; set; }
+        public int qID { get; set; }
 
-        public AnsweredQuestion(string excercise, string email, int QuestionNumber)
+        public AnsweredQuestion(string excercise, string email, int QuestionNumber, int questionID)
         {
             this.excercise = excercise;
             this.email = email;
             this.questionNumber = QuestionNumber;
+            this.qID = questionID;
         }
         public AnsweredQuestion()
         {
             this.excercise = this.email = string.Empty;
-            this.questionNumber = 0;
+            this.questionNumber = this.qID = 0;
         }
     }
 }
